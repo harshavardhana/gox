@@ -24,7 +24,7 @@ func realMain() int {
 	var tags string
 	var verbose bool
 	var flagGcflags string
-	var flagCgo, flagRebuild, flagListOSArch bool
+	var flagRebuild, flagListOSArch bool
 	flags := flag.NewFlagSet("gox", flag.ExitOnError)
 	flags.Usage = func() { printUsage() }
 	flags.Var(platformFlag.ArchFlagValue(), "arch", "arch to build for or skip")
@@ -36,7 +36,6 @@ func realMain() int {
 	flags.IntVar(&parallel, "parallel", -1, "parallelization factor")
 	flags.BoolVar(&buildToolchain, "build-toolchain", false, "build toolchain")
 	flags.BoolVar(&verbose, "verbose", false, "verbose")
-	flags.BoolVar(&flagCgo, "cgo", false, "")
 	flags.BoolVar(&flagRebuild, "rebuild", false, "")
 	flags.BoolVar(&flagListOSArch, "osarch-list", false, "")
 	flags.StringVar(&flagGcflags, "gcflags", "", "")
@@ -127,7 +126,6 @@ func realMain() int {
 					OutputTpl:   outputTpl,
 					Ldflags:     ldflags,
 					Tags:        tags,
-					Cgo:         flagCgo,
 					Rebuild:     flagRebuild,
 				}
 				if err := GoCrossCompile(opts); err != nil {
@@ -168,7 +166,6 @@ Options:
 
   -arch=""            Space-separated list of architectures to build for
   -build-toolchain    Build cross-compilation toolchain
-  -cgo                Sets CGO_ENABLED=1, requires proper C toolchain (advanced)
   -gcflags=""         Additional '-gcflags' value to pass to go build
   -ldflags=""         Additional '-ldflags' value to pass to go build
   -tags=""            Additional '-tags' value to pass to go build

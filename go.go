@@ -35,10 +35,8 @@ type CompileOpts struct {
 func GoCrossCompile(opts *CompileOpts) error {
 	env := append(os.Environ(),
 		"GOOS="+opts.Platform.OS,
-		"GOARCH="+opts.Platform.Arch)
-	if opts.Cgo {
-		env = append(env, "CGO_ENABLED=1")
-	}
+		"GOARCH="+opts.Platform.Arch,
+		"GO15VENDOREXPERIMENT=1")
 
 	var outputPath bytes.Buffer
 	tpl, err := template.New("output").Parse(opts.OutputTpl)
